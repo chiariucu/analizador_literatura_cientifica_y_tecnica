@@ -1,0 +1,30 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.unittest_cache/
+
+# --- IDEs / PyCharm ---
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# --- Entornos Virtuales ---
+venv/
+.venv/
+env/
+ENV/
+
+# --- Datos generados ---
+# Ignorar reportes locales CSV generados para que no contaminen el repositorio de código
+reporte_*.csv
+temp_test_export.csv
+
+# --- Sistema Operativo ---
+.DS_Store
+Thumbs.db
