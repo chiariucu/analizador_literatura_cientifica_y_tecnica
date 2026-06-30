@@ -97,3 +97,15 @@ El analizador procesa las colecciones validadas en memoria y las acopla con mét
 1. **Optimización del Ancho de Banda:** Se configuraron parámetros restrictivos en las solicitudes de la API para exigir exclusivamente los campos requeridos por el modelo de datos. Esto minimiza el tamaño del payload JSON de respuesta, reduciendo drásticamente la latencia de red y el consumo de memoria del sistema.
 2. **Consideraciones Éticas Digitales:** Se inyectó explícitamente una cabecera HTTP personalizada (`User-Agent` único e identificable) en las peticiones del cliente asíncrono. En el desarrollo profesional de software, esto constituye una buena práctica ética mandatoria que permite a los administradores de los servidores públicos auditar de forma transparente el tráfico de nuestra aplicación, previniendo bloqueos automatizados.
 
+---
+
+## 5. Desafíos Técnicos Encontrados y Estrategias de Resolución
+
+Durante el ciclo de desarrollo del proyecto, se presentaron anomalías y limitaciones metodológicas que requirieron decisiones de diseño adaptativas:
+
+* **Limitación en la Extracción de Datos (Google Books API):** * *El Problema:* Inicialmente, el sistema estaba proyectado para consumir el catálogo de Google Books, pero las restricciones de autenticación (API Keys estrictas) y la estructura irregular de sus payloads limitaron la viabilidad del pipeline asíncrono planeado en las etapas tempranas.
+  * *La Solución:* Se pivotó estratégicamente hacia la API pública de *Open Library*. Para no renunciar a una futura integración con Google Books, se aplicó el principio de inversión de dependencias: se creó la interfaz abstracta `ClienteApi`. De esta manera, el backend queda desacoplado del proveedor y el sistema está preparado para incorporar un `ClienteGoogleBooks` en el futuro sin alterar el código analítico actual.
+
+* **Falsos Positivos Léxicos en la Ingesta de Datos (El caso de "Machine Learning"):**
+  * *El Problema:* Al realizar búsquedas abiertas con términos técnicos ingleses como *machine learning*, el motor de Open Library indexó y devolvió obras de ficción literaria clásica, como *La máquina del tiempo* de H.G. Wells, debido a una coincidencia léxica parcial con la palabra "machine" en traducciones al español.
+  * *La Solución:* Se determinó que este fenómeno constituye un "ruido" propio de la heurística de búsqueda indexada de la API externa y no un error sintáctico o lógico del código. En lugar de forzar parches artificiales en el backend, se resolvió metodológicamente desde la interacción del usuario: el software tolera y procesa de forma segura el registro gracias a la programación defensiva de `models.py`, y se instruye al investigador a utilizar operadores de coincidencia exacta (comillas dobles) en la interfaz para depurar la muestra estadística directamente desde el origen.
