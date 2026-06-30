@@ -103,7 +103,8 @@ El analizador procesa las colecciones validadas en memoria y las acopla con mét
 
 Durante el ciclo de desarrollo del proyecto, se presentaron anomalías y limitaciones metodológicas que requirieron decisiones de diseño adaptativas:
 
-* **Limitación en la Extracción de Datos (Google Books API):** * *El Problema:* Inicialmente, el sistema estaba proyectado para consumir el catálogo de Google Books, pero las restricciones de autenticación (API Keys estrictas) y la estructura irregular de sus payloads limitaron la viabilidad del pipeline asíncrono planeado en las etapas tempranas.
+* **Limitación en la Extracción de Datos (Google Books API):**
+  * *El Problema:* Inicialmente, el sistema estaba proyectado para consumir el catálogo de Google Books, pero las restricciones de autenticación (API Keys estrictas) y la estructura irregular de sus payloads limitaron la viabilidad del pipeline asíncrono planeado en las etapas tempranas.
   * *La Solución:* Se pivotó estratégicamente hacia la API pública de *Open Library*. Para no renunciar a una futura integración con Google Books, se aplicó el principio de inversión de dependencias: se creó la interfaz abstracta `ClienteApi`. De esta manera, el backend queda desacoplado del proveedor y el sistema está preparado para incorporar un `ClienteGoogleBooks` en el futuro sin alterar el código analítico actual.
 
 * **Falsos Positivos Léxicos en la Ingesta de Datos (El caso de "Machine Learning"):**
